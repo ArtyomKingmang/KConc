@@ -1,113 +1,35 @@
+package com.kingmang.Kconc;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Main {
-    static int cols;
-    static int rows;
-    static double angle = 0;
-    static char[][][] screenBuffer;
-    static Thread render = new Thread("renderThread") {
-        @Override
-        public void run() {
-            int fps = 60;
-            while (true) {
-                long start = System.currentTimeMillis();
+import static com.kingmang.Kconc.Arr.toArray1D;
+import static com.kingmang.Kconc.Arr.toArray2D;
+import static com.kingmang.Kconc.Engine.*;
+import static com.kingmang.Kconc.Screen.drawScreen;
+import static com.kingmang.Kconc.Screen.initScreen;
 
-                drawScreen();
-                angle += 0.03 * (60d / fps);
-
-                try {
-                    Thread.sleep((1000 / fps) - (System.currentTimeMillis() - start));
-                } catch (Exception ignored) {
-                }
-            }
-        }
-    };
-
-    public static int clamp(double x, int min, int max) {
-        if (x < min) {
-            x = min;
-        } else if (x > max) {
-            x = max;
-        }
-        return (int) x;
-    }
-
-    public static void initScreen(char[][] screen) {
-        for (int row = 0; row < screen.length; row++) {
-            for (int col = 0; col < screen[0].length - 1; col++) {
-                screen[row][col] = ' ';
-            }
-            screen[row][cols] = '\n';
-        }
-    }
-
-    public static void drawScreen() {
-        String screenStr = "";
-        for (int row = 0; row < screenBuffer[1].length; row++) {
-            for (int col = 0; col < screenBuffer[1][0].length; col++) {
-                screenStr += screenBuffer[1][row][col];
-            }
-        }
-        screenStr += "\033[H";
-        System.out.print(screenStr);
-    }
-
-    public static double[][] multiplyMatrices(double[][] matrixA, double[][] matrixB) {
-        double[][] finalMatrix = new double[matrixA.length][matrixB[0].length];
-        for (int i = 0; i < matrixA.length; i++) {
-            for (int j = 0; j < matrixB[0].length; j++) {
-                for (int k = 0; k < matrixA[0].length; k++) {
-                    finalMatrix[i][j] += matrixA[i][k] * matrixB[k][j];
-                }
-            }
-        }
-        return finalMatrix;
-    }
-
-    public static double[] toArray1D(double[][] array2D) {
-        double[] array1D = new double[array2D.length];
-        for (int i = 0; i < array1D.length; i++) {
-            array1D[i] = array2D[i][0];
-        }
-        return array1D;
-    }
-
-    public static double[][] toArray2D(double[] array1D) {
-        double[][] array2D = new double[array1D.length][1];
-        for (int i = 0; i < array2D.length; i++) {
-            array2D[i][0] = array1D[i];
-        }
-        return array2D;
-    }
-
-    public static double[][] sortVerts(double[][] verts) {
-        double[][][] verts3D = new double[verts.length / 4][4][3];
-        for (int i = 0; i < verts.length; i += 4) {
-            verts3D[i / 4] = new double[][]{verts[i], verts[i + 1], verts[i + 2], verts[i + 3]};
-        }
-        Arrays.sort(verts3D, new Comparator<double[][]>() {
-            @Override
-            public int compare(double[][] triangle1, double[][] triangle2) {
-                if (((triangle1[0][2] + triangle1[1][2] + triangle1[2][2]) / 3) < ((triangle2[0][2] + triangle2[1][2] + triangle2[2][2]) / 3)) {
-                    return 1;
-                } else if (((triangle1[0][2] + triangle1[1][2] + triangle1[2][2]) / 3) > ((triangle2[0][2] + triangle2[1][2] + triangle2[2][2]) / 3)) {
-                    return -1;
-                }
-                return 0;
-            }
-        });
-
-        double[][] finalVerts = new double[verts.length][3];
-        for (int i = 0; i < verts3D.length; i++) {
-            System.arraycopy(verts3D[i], 0, finalVerts, i * 4, 4);
-        }
-
-        return finalVerts;
-    }
-
+public class Render {
     public static void render(double[][] verts) {
+        Thread render = new Thread("renderThread") {
+            @Override
+            public void run() {
+                int fps = 60;
+                while (true) {
+                    long start = System.currentTimeMillis();
+
+                    drawScreen();
+                    angle += 0.03 * (60d / fps);
+
+                    try {
+                        Thread.sleep((1000 / fps) - (System.currentTimeMillis() - start));
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        };
         render.start();
         while (true) {
             double[][] rotationX = {
@@ -191,7 +113,6 @@ public class Main {
         drawLine(tempScreen, vert2[0], vert2[1], vert3[0], vert3[1], shadingChar);
         drawLine(tempScreen, vert3[0], vert3[1], vert1[0], vert1[1], shadingChar);
 
-        // rasterization
         for (int row = 0; row < tempScreen.length; row++) {
             String rowStr = new String(tempScreen[row]);
             for (int rasterize = rowStr.indexOf(shadingChar); rasterize < rowStr.lastIndexOf(shadingChar); rasterize++) {
@@ -208,18 +129,6 @@ public class Main {
         }
     }
 
-    public static void drawTriangle(double[] vert1, double[] vert2, double[] vert3) {
-        double[][] projection = {
-                {1, 0, 0},
-                {0, 1, 0}
-        };
-        vert1 = toArray1D(multiplyMatrices(projection, toArray2D(vert1)));
-        vert2 = toArray1D(multiplyMatrices(projection, toArray2D(vert2)));
-        vert3 = toArray1D(multiplyMatrices(projection, toArray2D(vert3)));
-        drawLine(screenBuffer[0], vert1[0], vert1[1], vert2[0], vert2[1], '*');
-        drawLine(screenBuffer[0], vert2[0], vert2[1], vert3[0], vert3[1], '*');
-        drawLine(screenBuffer[0], vert3[0], vert3[1], vert1[0], vert1[1], '*');
-    }
 
     public static void drawLine(char[][] screen, double x1, double y1, double x2, double y2, char ch) {
         x1 = (cols / 2d) + x1 / 2d * cols;
@@ -313,15 +222,4 @@ public class Main {
         return finalArray;
     }
 
-    public static void main(String[] args) throws IOException {
-        Scanner scan = new Scanner(System.in);
-        String file = scan.nextLine();
-        cols = Integer.parseInt("50");
-        rows = Integer.parseInt("50");
-        screenBuffer = new char[2][rows][cols + 1];
-
-        initScreen(screenBuffer[0]);
-        initScreen(screenBuffer[1]);
-        render(load(file));
-    }
 }
