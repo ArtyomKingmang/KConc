@@ -1,6 +1,6 @@
 package com.kingmang.Kconc;
 
-public class Arr {
+public class ConvertArray {
     public static double[] toArray1D(double[][] array2D) {
         double[] array1D = new double[array2D.length];
         for (int i = 0; i < array1D.length; i++) {

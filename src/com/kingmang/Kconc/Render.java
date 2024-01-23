@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static com.kingmang.Kconc.Arr.toArray1D;
-import static com.kingmang.Kconc.Arr.toArray2D;
-import static com.kingmang.Kconc.Engine.*;
+import static com.kingmang.Kconc.ConvertArray.toArray1D;
+import static com.kingmang.Kconc.ConvertArray.toArray2D;
+import static com.kingmang.Kconc.Matrix.*;
 import static com.kingmang.Kconc.Screen.drawScreen;
 import static com.kingmang.Kconc.Screen.initScreen;
 

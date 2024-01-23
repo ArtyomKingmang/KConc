@@ -1,7 +1,7 @@
 package com.kingmang.Kconc;
 
-import static com.kingmang.Kconc.Engine.cols;
-import static com.kingmang.Kconc.Engine.screenBuffer;
+import static com.kingmang.Kconc.Matrix.cols;
+import static com.kingmang.Kconc.Matrix.screenBuffer;
 
 public class Screen {
     public static void initScreen(char[][] screen) {

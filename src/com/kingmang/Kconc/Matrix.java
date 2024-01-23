@@ -2,7 +2,7 @@ package com.kingmang.Kconc;
 
 import java.util.*;
 
-public class Engine {
+public class Matrix {
     static int cols;
     static int rows;
     static double angle = 0;
