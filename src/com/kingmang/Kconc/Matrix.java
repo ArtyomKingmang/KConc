@@ -29,8 +29,6 @@ public class Matrix {
         return finalMatrix;
     }
 
-
-
     public static double[][] sortVerts(double[][] verts) {
         double[][][] verts3D = new double[verts.length / 4][4][3];
         for (int i = 0; i < verts.length; i += 4) {
