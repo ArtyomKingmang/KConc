@@ -19,7 +19,6 @@ public class Render {
                 int fps = 60;
                 while (true) {
                     long start = System.currentTimeMillis();
-
                     drawScreen();
                     angle += 0.03 * (60d / fps);
 
@@ -31,7 +30,7 @@ public class Render {
         };
         render.start();
         while (true) {
-
+            Rotate.updateMatrix();
             ArrayList<double[]> visibleVertsAfterRotation = new ArrayList<>();
             for (int i = 0; i < verts.length; i += 3) {
                 double[] vert1 = toArray1D(multiplyMatrices(Rotate.x, multiplyMatrices(Rotate.y, multiplyMatrices(Rotate.z, toArray2D(verts[i])))));

@@ -1,6 +1,7 @@
 package com.kingmang.Kconc;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.kingmang.Kconc.Render.load;
 import static com.kingmang.Kconc.Render.render;
@@ -8,7 +9,8 @@ import static com.kingmang.Kconc.Screen.initScreen;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String file = "C:\\Users\\crowb\\Desktop\\models\\cube.obj";
+
+        String file = "cube.obj";
         Matrix.cols = 50;
         Matrix.rows = 50;
         Matrix.screenBuffer = new char[2][Matrix.rows][Matrix.cols + 1];
