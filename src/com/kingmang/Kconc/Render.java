@@ -30,12 +30,33 @@ public class Render {
         };
         render.start();
         while (true) {
-            Rotate.updateMatrix();
+            Rotate.updateMatrix(
+
+            new double[][]{
+                    // x
+                    {1, 0, 0},
+                    {0, 1, 0},
+                    {0, 0, 1}
+            },
+            new double[][]{
+                     // y
+                    {Math.cos(Matrix.angle), 0, Math.sin(Matrix.angle)},
+                    {0, 1, 0},
+                    {-Math.sin(Matrix.angle), 0, Math.cos(Matrix.angle)}
+            },
+            new double[][]{
+                    // z
+                    {1, 0, 0},
+                    {0, 1, 0},
+                    {0, 0, 1}
+            }
+
+            );
             ArrayList<double[]> visibleVertsAfterRotation = new ArrayList<>();
             for (int i = 0; i < verts.length; i += 3) {
-                double[] vert1 = toArray1D(multiplyMatrices(Rotate.x, multiplyMatrices(Rotate.y, multiplyMatrices(Rotate.z, toArray2D(verts[i])))));
-                double[] vert2 = toArray1D(multiplyMatrices(Rotate.x, multiplyMatrices(Rotate.y, multiplyMatrices(Rotate.z, toArray2D(verts[i + 1])))));
-                double[] vert3 = toArray1D(multiplyMatrices(Rotate.x, multiplyMatrices(Rotate.y, multiplyMatrices(Rotate.z, toArray2D(verts[i + 2])))));
+                double[] vert1 = toArray1D(multiplyMatrices(Rotate.getX(), multiplyMatrices(Rotate.getY(), multiplyMatrices(Rotate.getZ(), toArray2D(verts[i])))));
+                double[] vert2 = toArray1D(multiplyMatrices(Rotate.getX(), multiplyMatrices(Rotate.getY(), multiplyMatrices(Rotate.getZ(), toArray2D(verts[i + 1])))));
+                double[] vert3 = toArray1D(multiplyMatrices(Rotate.getX(), multiplyMatrices(Rotate.getY(), multiplyMatrices(Rotate.getZ(), toArray2D(verts[i + 2])))));
 
                 double[] normal = {
                         (((vert2[1] - vert1[1]) * (vert3[2] - vert1[2])) - ((vert2[2] - vert1[2]) * (vert3[1] - vert1[1]))),

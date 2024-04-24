@@ -8,6 +8,7 @@ public class Matrix {
     static double angle = 0;
     public static char[][][] screenBuffer;
 
+
     public static int clamp(double x, int min, int max) {
         if (x < min) {
             x = min;
