@@ -35,16 +35,13 @@ public class Matrix {
         for (int i = 0; i < verts.length; i += 4) {
             verts3D[i / 4] = new double[][]{verts[i], verts[i + 1], verts[i + 2], verts[i + 3]};
         }
-        Arrays.sort(verts3D, new Comparator<double[][]>() {
-            @Override
-            public int compare(double[][] triangle1, double[][] triangle2) {
-                if (((triangle1[0][2] + triangle1[1][2] + triangle1[2][2]) / 3) < ((triangle2[0][2] + triangle2[1][2] + triangle2[2][2]) / 3)) {
-                    return 1;
-                } else if (((triangle1[0][2] + triangle1[1][2] + triangle1[2][2]) / 3) > ((triangle2[0][2] + triangle2[1][2] + triangle2[2][2]) / 3)) {
-                    return -1;
-                }
-                return 0;
+        Arrays.sort(verts3D, (triangle1, triangle2) -> {
+            if (((triangle1[0][2] + triangle1[1][2] + triangle1[2][2]) / 3) < ((triangle2[0][2] + triangle2[1][2] + triangle2[2][2]) / 3)) {
+                return 1;
+            } else if (((triangle1[0][2] + triangle1[1][2] + triangle1[2][2]) / 3) > ((triangle2[0][2] + triangle2[1][2] + triangle2[2][2]) / 3)) {
+                return -1;
             }
+            return 0;
         });
 
         double[][] finalVerts = new double[verts.length][3];

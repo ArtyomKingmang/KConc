@@ -12,7 +12,8 @@ import static com.kingmang.Kconc.Screen.drawScreen;
 import static com.kingmang.Kconc.Screen.initScreen;
 
 public class Render {
-    public static void render(double[][] verts) {
+
+    public void render(double[][] verts) {
         Thread render = new Thread("renderThread") {
             @Override
             public void run() {
@@ -29,29 +30,25 @@ public class Render {
             }
         };
         render.start();
-        while (true) {
-            Rotate.updateMatrix(
-
-            new double[][]{
-                    // x
-                    {1, 0, 0},
-                    {0, 1, 0},
-                    {0, 0, 1}
-            },
-            new double[][]{
-                     // y
-                    {Math.cos(Matrix.angle), 0, Math.sin(Matrix.angle)},
-                    {0, 1, 0},
-                    {-Math.sin(Matrix.angle), 0, Math.cos(Matrix.angle)}
-            },
-            new double[][]{
-                    // z
-                    {1, 0, 0},
-                    {0, 1, 0},
-                    {0, 0, 1}
-            }
-
-            );
+        while(true) {
+            Rotate.update(new double[][]{
+                            // x
+                            {1, 0, 0},
+                            {0, 1, 0},
+                            {0, 0, 1}
+                    },
+                    new double[][]{
+                            // y
+                            {Math.cos(Matrix.angle), 0, Math.sin(Matrix.angle)},
+                            {0, 1, 0},
+                            {-Math.sin(Matrix.angle), 0, Math.cos(Matrix.angle)}
+                    },
+                    new double[][]{
+                            // z
+                            {1, 0, 0},
+                            {0, 1, 0},
+                            {0, 0, 1}
+                    });
             ArrayList<double[]> visibleVertsAfterRotation = new ArrayList<>();
             for (int i = 0; i < verts.length; i += 3) {
                 double[] vert1 = toArray1D(multiplyMatrices(Rotate.getX(), multiplyMatrices(Rotate.getY(), multiplyMatrices(Rotate.getZ(), toArray2D(verts[i])))));

@@ -1,14 +1,14 @@
 package com.kingmang.Kconc;
 
 class Rotate {
-    private static double[][] x = new double[3][3];
-    private static double[][] y = new double[3][3];
-    private static double[][] z = new double[3][3];
+    private static double[][] x;
+    private static double[][] y;
+    private static double[][] z;
 
-    static void updateMatrix(double[][] changedX, double[][] changedY, double[][] changedZ){
-        x = changedX;
-        y = changedY;
-        z = changedZ;
+    public static void update(double[][] x, double[][] y, double[][] z){
+        Rotate.x = x;
+        Rotate.y = y;
+        Rotate.z = z;
     }
 
     public static double[][] getX(){
