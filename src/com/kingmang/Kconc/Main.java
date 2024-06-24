@@ -8,9 +8,9 @@ import static com.kingmang.Kconc.Screen.initScreen;
 public class Main {
     public static void main(String[] args) throws IOException {
         String file = "cube.obj";
-        Matrix.cols = 50;
-        Matrix.rows = 50;
-        Matrix.screenBuffer = new char[2][Matrix.rows][Matrix.cols + 1];
+        Matrix.setCols(50);
+        Matrix.setRows(50);
+        Matrix.screenBuffer = new char[2][Matrix.getRows()][Matrix.getCols() + 1];
 
         initScreen(Matrix.screenBuffer[0]);
         initScreen(Matrix.screenBuffer[1]);
