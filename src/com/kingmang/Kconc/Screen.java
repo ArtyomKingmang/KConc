@@ -1,6 +1,6 @@
 package com.kingmang.Kconc;
 
-import static com.kingmang.Kconc.Matrix.cols;
+import static com.kingmang.Kconc.Matrix.getCols;
 import static com.kingmang.Kconc.Matrix.screenBuffer;
 
 public class Screen {
@@ -9,7 +9,7 @@ public class Screen {
             for (int col = 0; col < screen[0].length - 1; col++) {
                 screen[row][col] = ' ';
             }
-            screen[row][cols] = '\n';
+            screen[row][getCols()] = '\n';
         }
     }
 
